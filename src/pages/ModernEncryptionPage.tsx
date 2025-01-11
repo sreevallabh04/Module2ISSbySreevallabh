@@ -55,11 +55,13 @@ export const ModernEncryptionPage = () => {
                       </div>
                     </div>
                     <div className="bg-black/30 p-4 rounded-lg">
-                      <img 
-                        src="https://images.unsplash.com/photo-1516116216624-53e697fedbea?auto=format&fit=crop&w=800&q=80"
-                        alt="DES Structure Visualization"
-                        className="rounded-lg w-full mb-4"
-                      />
+                    <div className="mt-6">
+                <img 
+                  src="images\des.jpg"
+                  alt="Cryptography Concept"
+                  className="rounded-lg w-full mb-4"
+                />
+                </div>
                       <p className="text-sm text-gray-400 italic">DES encryption process visualization</p>
                     </div>
                   </div>
@@ -127,6 +129,7 @@ export const ModernEncryptionPage = () => {
                       <div className="flex-1 h-1 bg-purple-500/30 mx-4"></div>
                       <div className="w-16 h-16 rounded-full bg-pink-500/30 flex items-center justify-center">
                         <Key className="w-8 h-8 text-pink-300" />
+                        
                       </div>
                     </div>
                     <p className="text-sm text-gray-400 italic text-center">Public key encryption flow</p>
@@ -134,6 +137,13 @@ export const ModernEncryptionPage = () => {
                 </div>
               </div>
             </div>
+            <div className="mt-6">
+                <img 
+                  src="images\pkc.jpg"
+                  alt="Cryptography Concept"
+                  className="rounded-lg w-full mb-4"
+                />
+                </div>
           </section>
 
           {/* Hash Functions */}

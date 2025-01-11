@@ -18,7 +18,7 @@ export const ClassicalCiphersPage = () => {
               </p>
               <div className="mt-6">
                 <img 
-                  src="https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&w=1200&q=80"
+                  src="images\ClassicalEncryptionTechniques.png"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />
@@ -60,11 +60,11 @@ export const ClassicalCiphersPage = () => {
                     </div>
                     <div className="bg-black/30 p-4 rounded-lg">
                       <img 
-                        src="https://images.unsplash.com/photo-1633356122544-f134324a6cee?auto=format&fit=crop&w=800&q=80"
+                        src="images\CaeserCipher.png"
                         alt="Caesar Cipher Wheel"
                         className="rounded-lg w-full mb-4"
                       />
-                      <p className="text-sm text-gray-400 italic">Caesar cipher wheel showing letter substitutions</p>
+                      <p className="text-sm text-gray-400 italic">Caesar cipher </p>
                     </div>
                   </div>
                 </div>
@@ -87,7 +87,15 @@ export const ClassicalCiphersPage = () => {
                         </ul>
                       </div>
                     </div>
-                    <div className="bg-black/30 p-4 rounded-lg">
+                    
+                <div className="mt-6">
+                <img 
+                  src="images\Playfair.png"
+                  alt="Cryptography Concept"
+                  className="rounded-lg w-full mb-4"
+                />
+                </div>
+                <div className="bg-black/30 p-4 rounded-lg">
                       <div className="grid grid-cols-5 gap-2 mb-4">
                         {/* Playfair Grid Example */}
                         {['P','L','A','Y','F','I','R','E','X','M','B','C','D','G','H','K','N','O','Q','S','T','U','V','W','Z'].map((letter, index) => (
@@ -298,6 +306,205 @@ export const ClassicalCiphersPage = () => {
                     </div>
                   </div>
                 </div>
+{/* Cryptanalysis */}
+<section className="bg-gray-900/50 backdrop-blur-md rounded-xl p-6 border border-purple-500/30">
+  <div className="flex items-start gap-4">
+    <ArrowDownUp className="w-6 h-6 text-purple-400 mt-1" />
+    <div>
+      <h2 className="text-3xl font-extrabold mb-4 text-purple-400">Cryptanalysis Techniques</h2>
+
+      {/* Frequency Analysis */}
+      <div className="mb-12">
+        <h3 className="text-2xl font-semibold mb-4 text-purple-300">Frequency Analysis</h3>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <p className="text-gray-300 mb-6">
+              Frequency analysis examines the occurrence of letters in ciphertext to break substitution ciphers. By analyzing letter frequencies, one can often deduce the plaintext without needing the key.
+            </p>
+            <div className="bg-black/30 p-6 rounded-lg">
+              <h4 className="text-lg font-semibold mb-3 text-purple-200">Common English Letter Frequencies:</h4>
+              <p className="text-sm text-gray-400">
+                E (12.7%), T (9.1%), A (8.2%), O (7.5%), I (7.0%), N (6.7%), S (6.3%)
+              </p>
+            </div>
+          </div>
+          <div className="bg-black/30 p-6 rounded-lg">
+            <h4 className="text-lg font-semibold mb-3 text-purple-200">Letter Frequency Bar Chart:</h4>
+            <div className="h-40 flex items-end space-x-3">
+              {[12.7, 9.1, 8.2, 7.5, 7.0, 6.7, 6.3].map((height, index) => (
+                <div
+                  key={index}
+                  className="flex-1 bg-purple-500/50 rounded-t"
+                  style={{ height: `${height * 2}px` }}
+                ></div>
+              ))}
+            </div>
+            <div className="flex justify-between mt-3 text-sm text-gray-400">
+              <span>E</span>
+              <span>T</span>
+              <span>A</span>
+              <span>O</span>
+              <span>I</span>
+              <span>N</span>
+              <span>S</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* Monoalphabetic Cipher */}
+      <div className="mb-12 border-t border-purple-500/50 pt-6">
+        <h3 className="text-2xl font-semibold mb-4 text-purple-300">Monoalphabetic Cipher</h3>
+        <p className="text-gray-300 mb-6">
+          A monoalphabetic cipher replaces each letter of the plaintext with another fixed letter. It is one of the simplest and oldest encryption techniques but is vulnerable to frequency analysis.
+        </p>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <div className="bg-black/30 p-6 rounded-lg mb-6">
+              <h4 className="text-lg font-semibold mb-3 text-purple-200">Example 1:</h4>
+              <p className="text-sm text-gray-400">
+                Plaintext: HELLO<br />
+                Ciphertext: KHOOR (using Caesar cipher with a shift of 3)
+              </p>
+            </div>
+            <div className="bg-black/30 p-6 rounded-lg mb-6">
+              <h4 className="text-lg font-semibold mb-3 text-purple-200">Example 2:</h4>
+              <p className="text-sm text-gray-400">
+                Plaintext: SECRET<br />
+                Ciphertext: VHFUHW (using Caesar cipher with a shift of 3)
+              </p>
+            </div>
+          </div>
+          <div className="mt-6">
+                <img 
+                  src="images\Monoalphabetic.png"
+                  alt="Cryptography Concept"
+                  className="rounded-lg w-full mb-4"
+                />
+                </div>
+          
+        </div>
+      </div>
+
+      {/* Hill Cipher */}
+      <div className="mb-12 border-t border-purple-500/50 pt-6">
+        <h3 className="text-2xl font-semibold mb-4 text-purple-300">Hill Cipher</h3>
+        <p className="text-gray-300 mb-6">
+          The Hill cipher is a polygraphic substitution cipher that uses linear algebra to transform blocks of plaintext into ciphertext. It operates on blocks of letters using matrix multiplication.
+        </p>
+        <div className="grid md:grid-cols-2 gap-8">
+          <div>
+            <div className="bg-black/30 p-6 rounded-lg mb-6">
+              <h4 className="text-lg font-semibold mb-3 text-purple-200">Example 1:</h4>
+              <p className="text-sm text-gray-400">
+                Plaintext: ACT<br />
+                Key Matrix: [[6, 24, 1], [13, 16, 10], [20, 17, 15]]<br />
+                Ciphertext: POH
+              </p>
+            </div>
+            <div className="bg-black/30 p-6 rounded-lg mb-6">
+              <h4 className="text-lg font-semibold mb-3 text-purple-200">Example 2:</h4>
+              <p className="text-sm text-gray-400">
+                Plaintext: CAT<br />
+                Key Matrix: [[2, 3], [1, 4]]<br />
+                Ciphertext: MZO
+              </p>
+            </div>
+          </div>
+          <div className="mt-6">
+                <img 
+                  src="images\HillCipher.png"
+                  alt="Cryptography Concept"
+                  className="rounded-lg w-full mb-4"
+                />
+                </div>
+        </div>
+      </div>
+
+   {/* Polyalphabetic Cipher */}
+<div className="mb-12 border-t border-purple-500/50 pt-6">
+  <h3 className="text-2xl font-semibold mb-4 text-purple-300">Polyalphabetic Cipher</h3>
+  <p className="text-gray-300 mb-6">
+    Polyalphabetic ciphers use multiple substitution alphabets to encrypt the plaintext, making frequency analysis more difficult. A common example is the Vigenère cipher.
+  </p>
+  <div className="grid md:grid-cols-2 gap-8">
+    {/* Left Column: Examples */}
+    <div>
+      <div className="bg-black/30 p-6 rounded-lg mb-6">
+        <h4 className="text-lg font-semibold mb-3 text-purple-200">Example 1:</h4>
+        <p className="text-sm text-gray-400">
+          Plaintext: ATTACK<br />
+          Key: LEMON<br />
+          Ciphertext: LXFOPV
+        </p>
+      </div>
+      <div className="bg-black/30 p-6 rounded-lg mb-6">
+        <h4 className="text-lg font-semibold mb-3 text-purple-200">Example 2:</h4>
+        <p className="text-sm text-gray-400">
+          Plaintext: DEFEND<br />
+          Key: ORANGE<br />
+          Ciphertext: RHFKGV
+        </p>
+      </div>
+      <div className="bg-black/30 p-6 rounded-lg mb-6">
+        <h4 className="text-lg font-semibold mb-3 text-purple-200">Example 3:</h4>
+        <p className="text-sm text-gray-400">
+          Plaintext: RETREAT<br />
+          Key: GRAPE<br />
+          Ciphertext: XFYVWEY
+        </p>
+      </div>
+    </div>
+    {/* Right Column: Images */}
+    <div>
+      <div className="mt-6">
+        <img 
+          src="images/Polyalpha1.png"
+          alt="Cryptography Concept"
+          className="rounded-lg w-3/4 mx-auto mb-4"
+        />
+      </div>
+      <div className="mt-6">
+        <img 
+          src="images/Polyalpha2.png"
+          alt="Cryptography Concept"
+          className="rounded-lg w-3/4 mx-auto mb-4"
+        />
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+      {/* One-Time Pad */}
+      <div className="mb-8 border-t border-purple-500/30 pt-6">
+        <h3 className="text-xl font-bold mb-4 text-purple-300">One-Time Pad</h3>
+        <p className="text-gray-300 mb-4">
+          The one-time pad cipher encrypts plaintext by combining it with a random key that is as long as the message. It is theoretically unbreakable if the key is truly random and used only once.
+        </p>
+        <div className="bg-black/30 p-4 rounded-lg mb-4">
+          <h4 className="font-bold mb-2">Example:</h4>
+          <p className="text-sm text-gray-400">
+            Plaintext: HELLO<br />
+            Key: XMCKL<br />
+            Ciphertext: EQNVZ
+          </p>
+        </div>
+        <div className="mt-6">
+                <img 
+                  src="images\Onetimepad.png"
+                  alt="Cryptography Concept"
+                  className="rounded-lg w-full mb-4"
+                />
+                </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+
 
                 {/* Pattern Recognition */}
                 <div>
