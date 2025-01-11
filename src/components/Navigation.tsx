@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import { Menu, X, BookOpen, Lock, Shield, Brain, Award } from 'lucide-react';
-import { Link, useLocation } from 'react-router-dom';
+import React, { useState } from "react";
+import { Menu, X, BookOpen, Lock, Shield, Brain, Award } from "lucide-react";
+import { Link, useLocation } from "react-router-dom";
 
 export const Navigation = () => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
 
   const navItems = [
-    { title: 'Introduction', icon: BookOpen, path: '/' },
-    { title: 'Classical Ciphers', icon: Lock, path: '/classical-ciphers' },
-    { title: 'Modern Encryption', icon: Shield, path: '/modern-encryption' },
-    { title: 'Practice', icon: Brain, path: '/practice' },
-    { title: 'Achievements', icon: Award, path: '/achievements' },
+    { title: "Introduction", icon: BookOpen, path: "/" },
+    { title: "Classical Ciphers", icon: Lock, path: "/classical-ciphers" },
+    { title: "Modern Encryption", icon: Shield, path: "/modern-encryption" },
+    { title: "Practice", icon: Brain, path: "/practice" },
+    { title: "Resources", icon: Award, path: "/resources" }, // Fixed path casing
   ];
 
   const isActive = (path: string) => {
@@ -34,7 +34,7 @@ export const Navigation = () => {
                 key={item.title}
                 to={item.path}
                 className={`text-gray-300 hover:text-purple-400 flex items-center space-x-2 px-3 py-2 rounded-md transition-colors ${
-                  isActive(item.path) ? 'text-purple-400 bg-purple-900/20' : ''
+                  isActive(item.path) ? "text-purple-400 bg-purple-900/20" : ""
                 }`}
               >
                 <item.icon className="w-4 h-4" />
@@ -62,9 +62,9 @@ export const Navigation = () => {
                 key={item.title}
                 to={item.path}
                 className={`text-gray-300 hover:text-purple-400 block px-3 py-2 rounded-md text-base font-medium w-full text-left flex items-center space-x-2 ${
-                  isActive(item.path) ? 'text-purple-400 bg-purple-900/20' : ''
+                  isActive(item.path) ? "text-purple-400 bg-purple-900/20" : ""
                 }`}
-                onClick={() => setIsOpen(false)}
+                onClick={() => setIsOpen(false)} // Close menu on link click
               >
                 <item.icon className="w-4 h-4" />
                 <span>{item.title}</span>

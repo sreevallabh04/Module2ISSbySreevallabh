@@ -161,7 +161,7 @@ export const PracticePage = () => {
                 <Trophy className="w-6 h-6 text-purple-400 mb-2" />
                 <h3 className="font-bold mb-2">Earn Badges</h3>
                 <p className="text-sm text-gray-400">
-                  Complete challenges to unlock achievements
+                  Complete challenges 
                 </p>
               </div>
             </div>
