@@ -19,7 +19,7 @@ export const ClassicalCiphersPage = () => {
               </p>
               <div className="mt-6">
                 <img 
-                  src="/src/images/ClassicalEncryptionTechniques.png"
+                  src="https://i.postimg.cc/rwjHmJpD/Classical-Encryption-Techniques.png"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />
@@ -61,7 +61,7 @@ export const ClassicalCiphersPage = () => {
                     </div>
                     <div className="bg-black/30 p-4 rounded-lg">
                       <img 
-                        src="/src/images/CaeserCipher.png"
+                        src="https://i.postimg.cc/yYFtqB4X/Caeser-Cipher.png"
                         alt="Caesar Cipher Wheel"
                         className="rounded-lg w-full mb-4"
                       />
