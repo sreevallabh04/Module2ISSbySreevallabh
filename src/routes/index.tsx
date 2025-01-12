@@ -5,6 +5,8 @@ import { ClassicalCiphersPage } from "../pages/ClassicalCiphersPage";
 import { ModernEncryptionPage } from "../pages/ModernEncryptionPage";
 import { PracticePage } from "../pages/PracticePage";
 import ResourcesPage from "../pages/ResourcesPage";
+import DataEncryptionStandard from '../pages/DataEncryptionStandard';
+
 
 export const router = createBrowserRouter([
   {
@@ -17,6 +19,7 @@ export const router = createBrowserRouter([
       { path: "modern-encryption", element: <ModernEncryptionPage /> },
       { path: "practice", element: <PracticePage /> },
       { path: "resources", element: <ResourcesPage /> }, // Consistent path string
+      { path: "DataEncryptionStandard", element: <DataEncryptionStandard /> }
     ],
   },
 ]);

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Menu, X, BookOpen, Lock, Shield, Brain, Award } from "lucide-react";
+import { Menu, X, BookOpen, Lock, Shield, Brain, Award, Cpu } from "lucide-react";
 import { Link, useLocation } from "react-router-dom";
 
 export const Navigation = () => {
@@ -11,7 +11,8 @@ export const Navigation = () => {
     { title: "Classical Ciphers", icon: Lock, path: "/classical-ciphers" },
     { title: "Modern Encryption", icon: Shield, path: "/modern-encryption" },
     { title: "Practice", icon: Brain, path: "/practice" },
-    { title: "Resources", icon: Award, path: "/resources" }, // Fixed path casing
+    { title: "Resources", icon: Award, path: "/resources" },
+    { title: "Data Encryption Standard", icon: Cpu, path: "/DataEncryptionStandard" }, // Updated DES page
   ];
 
   const isActive = (path: string) => {
