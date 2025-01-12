@@ -91,7 +91,7 @@ export const ClassicalCiphersPage = () => {
                     
                 <div className="mt-6">
                 <img 
-                  src="/src/images/Playfair.png"
+                  src="https://i.postimg.cc/ZYND3ZRt/Playfair.png"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />
@@ -182,7 +182,7 @@ export const ClassicalCiphersPage = () => {
           </div>
           <div className="mt-6">
                 <img 
-                  src="/src/images/Monoalphabetic.png"
+                  src="https://i.postimg.cc/Ss21gbf9/Monoalphabetic.png"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />
@@ -217,7 +217,7 @@ export const ClassicalCiphersPage = () => {
           </div>
           <div className="mt-6">
                 <img 
-                  src="/src/images/HillCipher.png"
+                  src="https://i.postimg.cc/255KBZq2/Hill-Cipher.png"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />
@@ -263,14 +263,14 @@ export const ClassicalCiphersPage = () => {
     <div>
       <div className="mt-6">
         <img 
-          src="src/images/Polyalpha1.png"
+          src="https://i.postimg.cc/jdr349wW/Polyalpha1.png"
           alt="Cryptography Concept"
           className="rounded-lg w-3/4 mx-auto mb-4"
         />
       </div>
       <div className="mt-6">
         <img 
-          src="/src/images/Polyalpha2.png"
+          src="https://i.postimg.cc/X7cHH8ds/Polyalpha2.png"
           alt="Cryptography Concept"
           className="rounded-lg w-3/4 mx-auto mb-4"
         />
@@ -294,7 +294,7 @@ export const ClassicalCiphersPage = () => {
         </div>
         <div className="mt-6">
                 <img 
-                  src="/src/images/Onetimepad.png"
+                  src="https://i.postimg.cc/1zYY03wP/Onetimepad.png"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />

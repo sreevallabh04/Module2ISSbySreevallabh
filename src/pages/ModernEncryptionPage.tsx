@@ -57,7 +57,7 @@ export const ModernEncryptionPage = () => {
                     <div className="bg-black/30 p-4 rounded-lg">
                     <div className="mt-6">
                 <img 
-                  src="/src/images/des.jpg"
+                  src="https://i.postimg.cc/VkmTmTzy/des.jpg"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />
@@ -139,7 +139,7 @@ export const ModernEncryptionPage = () => {
             </div>
             <div className="mt-6">
                 <img 
-                  src="/src/images/pkc.jpg"
+                  src="https://i.postimg.cc/nzyR5S3P/pkc.jpg"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />
