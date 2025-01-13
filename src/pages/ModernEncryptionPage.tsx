@@ -16,14 +16,7 @@ export const ModernEncryptionPage = () => {
               <p className="text-gray-300 mb-4">
                 Modern cryptography combines advanced mathematics with computer science to provide secure communication in the digital age.
               </p>
-              <div className="mt-6">
-                <img 
-                  src="https://images.unsplash.com/photo-1558494949-ef010cbdcc31?auto=format&fit=crop&w=1200&q=80"
-                  alt="Modern Encryption Concept"
-                  className="rounded-lg w-full mb-4"
-                />
-                <p className="text-sm text-gray-400 italic">Modern encryption protects our digital world</p>
-              </div>
+              
             </div>
           </div>
         </section>
@@ -52,15 +45,31 @@ export const ModernEncryptionPage = () => {
                           <li>56-bit key (considered insecure today)</li>
                           <li>64-bit block size</li>
                         </ul>
-                      </div>
-                    </div>
-                    <div className="bg-black/30 p-4 rounded-lg">
-                    <div className="mt-6">
-                <img 
-                  src="https://i.postimg.cc/VkmTmTzy/des.jpg"
+                        <br></br>
+                        <p><b>Key scheduling</b></p>
+
+                        <img 
+                  src="https://i.postimg.cc/SR7TwMf9/Key-Scheduling.png"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />
+                                      </div>
+                    </div>
+                    <div className="bg-black/30 p-4 rounded-lg">
+                    <div className="mt-6">
+                    <p> <b> Data Encryption Standard </b> </p> 
+                  <img 
+                    src="https://i.postimg.cc/VkmTmTzy/des.jpg"
+                    alt="Cryptography Concept"
+                    className="rounded-lg w-full mb-4"
+                  />
+                  <p><b> Round Function</b></p>
+                  <img 
+                    src="https://i.postimg.cc/ZK4D6wJx/Round-Function.png"
+                    alt="Cryptography Concept"
+                    className="rounded-lg w-full mb-4"
+                  />
+                
                 </div>
                       <p className="text-sm text-gray-400 italic">DES encryption process visualization</p>
                     </div>
@@ -73,18 +82,26 @@ export const ModernEncryptionPage = () => {
                   <div className="grid md:grid-cols-2 gap-6">
                     <div>
                       <p className="text-gray-300 mb-4">
-                        AES is the current standard for symmetric encryption, offering multiple key sizes and excellent performance.
+                      AES (Rijndael) is the global standard for symmetric encryption, selected by NIST in 2001. Designed by cryptographers Joan Daemen and Vincent Rijmen, it processes data in 128-bit blocks through multiple rounds of substitution and permutation operations
                       </p>
                       <div className="bg-black/30 p-4 rounded-lg">
-                        <h4 className="font-bold mb-2">Specifications:</h4>
-                        <ul className="text-sm text-gray-400 list-disc list-inside space-y-1">
-                          <li>Key sizes: 128, 192, or 256 bits</li>
-                          <li>128-bit block size</li>
-                          <li>Substitution-permutation network</li>
-                          <li>Highly efficient in hardware</li>
-                        </ul>
-                      </div>
-                    </div>
+        <h4 className="font-bold mb-2">Specifications:</h4>
+        <ul className="text-sm text-gray-400 list-disc list-inside space-y-1">
+          <li>Key sizes: 128 bits (10 rounds), 192 bits (12 rounds), or 256 bits (14 rounds)</li>
+          <li>128-bit block size processed in 4×4 byte matrix</li>
+          <li>Four operations per round: SubBytes, ShiftRows, MixColumns, AddRoundKey</li>
+          <li>Highly efficient in both hardware and software implementations</li>
+          <li>Approved for top-secret information by the NSA</li>
+          <li>Resistant to known attacks including differential and linear cryptanalysis</li>
+        </ul>
+        
+                  <img 
+                    src="https://i.postimg.cc/6qyqPrXj/aes-structure.jpg"
+                    alt="Cryptography Concept"
+                    className="rounded-lg w-full mb-4"
+                  />
+                  </div>
+                   </div>
                     <div className="bg-black/30 p-4 rounded-lg">
                       <div className="grid grid-cols-4 gap-2 mb-4">
                         {Array(16).fill(0).map((_, i) => (
@@ -139,7 +156,7 @@ export const ModernEncryptionPage = () => {
             </div>
             <div className="mt-6">
                 <img 
-                  src="https://i.postimg.cc/nzyR5S3P/pkc.jpg"
+                  src="https://i.postimg.cc/prbKMVWM/random.jpg"
                   alt="Cryptography Concept"
                   className="rounded-lg w-full mb-4"
                 />
@@ -184,49 +201,50 @@ export const ModernEncryptionPage = () => {
           </section>
 
           {/* Interactive Demo */}
-          <section className="bg-gray-900/50 backdrop-blur-md rounded-xl p-6 border border-purple-500/30">
-            <div className="flex items-start gap-4">
-              <Database className="w-6 h-6 text-purple-400 mt-1" />
-              <div>
-                <h2 className="text-2xl font-bold mb-4">Modern Applications</h2>
-                <div className="grid md:grid-cols-3 gap-6">
-                  <div className="bg-black/30 p-4 rounded-lg">
-                    <h3 className="font-bold mb-2 text-purple-300">HTTPS/TLS</h3>
-                    <img 
-                      src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=400&q=80"
-                      alt="Web Security"
-                      className="rounded-lg w-full mb-4"
-                    />
-                    <p className="text-sm text-gray-400">
-                      Secures web communication using certificates and encryption
-                    </p>
-                  </div>
-                  <div className="bg-black/30 p-4 rounded-lg">
-                    <h3 className="font-bold mb-2 text-purple-300">Digital Signatures</h3>
-                    <img 
-                      src="https://images.unsplash.com/photo-1560472355-536de3962603?auto=format&fit=crop&w=400&q=80"
-                      alt="Digital Signatures"
-                      className="rounded-lg w-full mb-4"
-                    />
-                    <p className="text-sm text-gray-400">
-                      Ensures authenticity and non-repudiation of digital documents
-                    </p>
-                  </div>
-                  <div className="bg-black/30 p-4 rounded-lg">
-                    <h3 className="font-bold mb-2 text-purple-300">Blockchain</h3>
-                    <img 
-                      src="https://images.unsplash.com/photo-1621504450181-5d356f61d307?auto=format&fit=crop&w=400&q=80"
-                      alt="Blockchain Technology"
-                      className="rounded-lg w-full mb-4"
-                    />
-                    <p className="text-sm text-gray-400">
-                      Uses cryptography for secure, decentralized transactions
-                    </p>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </section>
+          <section className="bg-gray-900/50 backdrop-blur-md rounded-xl p-6 border border-purple-500/30 shadow-lg">
+  <div className="flex items-start gap-4">
+    <Database className="w-6 h-6 text-purple-400 mt-1" />
+    <div>
+      <h2 className="text-2xl font-bold mb-4 text-purple-200">Modern Applications</h2>
+      <div className="grid md:grid-cols-3 gap-6">
+        <div className="bg-black/40 p-6 rounded-lg border border-gray-700 hover:scale-105 transition-transform">
+          <h3 className="font-bold mb-3 text-purple-300 text-lg">HTTPS/TLS</h3>
+          <img 
+            src="https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?auto=format&fit=crop&w=400&q=80"
+            alt="Web Security"
+            className="rounded-lg w-full mb-4 shadow-md"
+          />
+          <p className="text-sm text-gray-400 leading-relaxed">
+            Secures web communication using certificates and encryption.
+          </p>
+        </div>
+        <div className="bg-black/40 p-6 rounded-lg border border-gray-700 hover:scale-105 transition-transform">
+          <h3 className="font-bold mb-3 text-purple-300 text-lg">Digital Signatures</h3>
+          <img 
+            src="https://images.unsplash.com/photo-1560472355-536de3962603?auto=format&fit=crop&w=400&q=80"
+            alt="Digital Signatures"
+            className="rounded-lg w-full mb-4 shadow-md"
+          />
+          <p className="text-sm text-gray-400 leading-relaxed">
+            Ensures authenticity and non-repudiation of digital documents.
+          </p>
+        </div>
+        <div className="bg-black/40 p-6 rounded-lg border border-gray-700 hover:scale-105 transition-transform">
+          <h3 className="font-bold mb-3 text-purple-300 text-lg">Blockchain</h3>
+          <img 
+            src="https://images.unsplash.com/photo-1621504450181-5d356f61d307?auto=format&fit=crop&w=400&q=80"
+            alt="Blockchain Technology"
+            className="rounded-lg w-full mb-4 shadow-md"
+          />
+          <p className="text-sm text-gray-400 leading-relaxed">
+            Uses cryptography for secure, decentralized transactions.
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
         </div>
       </div>
     </div>
