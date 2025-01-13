@@ -12,7 +12,7 @@ export const Navigation = () => {
     { title: "Modern Encryption", icon: Shield, path: "/modern-encryption" },
     { title: "Practice", icon: Brain, path: "/practice" },
     { title: "Resources", icon: Award, path: "/resources" },
-    { title: "Data Encryption Standard", icon: Cpu, path: "/DataEncryptionStandard" }, // Updated DES page
+    { title: "Simple-DES solver", icon: Cpu, path: "/DataEncryptionStandard" }, // Updated DES page
   ];
 
   const isActive = (path: string) => {

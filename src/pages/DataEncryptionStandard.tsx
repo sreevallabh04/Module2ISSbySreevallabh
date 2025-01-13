@@ -1,246 +1,265 @@
-import React, { useState } from 'react';
-import { Shield, Key, Lock, Database, Cpu, Network, ArrowRight, Play, RefreshCw } from 'lucide-react';
+import React, { useState } from "react";
 
-const SDESImplementation = () => {
-  const [input, setInput] = useState('01110010');
-  const [key, setKey] = useState('1010000010');
-  const [result, setResult] = useState('01110111');
-  const [activeTab, setActiveTab] = useState('sdes');
-  const [showPermutations, setShowPermutations] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
 
-  const permutations = {
+const SDESEncryption = () => {
+  const [input, setInput] = useState("");
+  const [key, setKey] = useState("");
+  const [k1, setK1] = useState([]);
+  const [k2, setK2] = useState([]);
+  const [output, setOutput] = useState("");
+  const [steps, setSteps] = useState([]);
+  const [error, setError] = useState("");
+  const [showSteps, setShowSteps] = useState(false);
+
+  const tables = {
     P10: [3, 5, 2, 7, 4, 10, 1, 9, 8, 6],
     P8: [6, 3, 7, 4, 8, 5, 10, 9],
+    IP: [2, 6, 3, 1, 4, 8, 5, 7],
+    IP_INV: [4, 1, 3, 5, 7, 2, 8, 6],
+    EP: [4, 1, 2, 3, 2, 3, 4, 1],
     P4: [2, 4, 3, 1],
-    IP: [2, 6, 3, 1, 4, 8, 5, 7]
   };
 
-  const handleEncrypt = () => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-    }, 1000);
+  const validateBinary = (str, length) => {
+    const regex = new RegExp(`^[0-1]{${length}}$`);
+    return regex.test(str);
+  };
+
+  // Utility functions for encryption
+  const permute = (bits, table) => table.map((i) => bits[i - 1]);
+  const leftShift = (bits, shifts) => [...bits.slice(shifts), ...bits.slice(0, shifts)];
+  const xor = (bits1, bits2) => bits1.map((bit, i) => bit ^ bits2[i]);
+
+  const generateKeys = () => {
+    // Clear previous error and results
+    setError("");
+    setK1([]);
+    setK2([]);
+    setSteps([]);
+
+    // Validate key input
+    if (!key) {
+      setError("Please enter a key");
+      return;
+    }
+    if (!validateBinary(key, 10)) {
+      setError("Key must be 10 bits of binary (0s and 1s only)");
+      return;
+    }
+
+    const P10 = tables.P10;
+    const P8 = tables.P8;
+
+    // Convert key string to array of numbers and apply P10
+    const permutedKey = permute(key.split("").map(Number), P10);
+    
+    // Split into left and right halves
+    const left = permutedKey.slice(0, 5);
+    const right = permutedKey.slice(5);
+
+    // Generate K1
+    const leftLS1 = leftShift(left, 1);
+    const rightLS1 = leftShift(right, 1);
+    const combinedLS1 = [...leftLS1, ...rightLS1];
+    const K1 = permute(combinedLS1, P8);
+
+    // Generate K2
+    const leftLS2 = leftShift(leftLS1, 2);
+    const rightLS2 = leftShift(rightLS1, 2);
+    const combinedLS2 = [...leftLS2, ...rightLS2];
+    const K2 = permute(combinedLS2, P8);
+
+    // Update state with generated keys
+    setK1(K1);
+    setK2(K2);
+    setSteps((prev) => [
+      ...prev,
+      {
+        step: "Key Generation",
+        details: {
+          permutedKey,
+          K1,
+          K2,
+        },
+      },
+    ]);
+    
+    setShowSteps(true);
+  };
+
+  const encrypt = () => {
+    // Validate input before encryption
+    if (!input) {
+      setError("Please enter input text");
+      return;
+    }
+    if (!validateBinary(input, 8)) {
+      setError("Input must be 8 bits of binary (0s and 1s only)");
+      return;
+    }
+    if (k1.length === 0 || k2.length === 0) {
+      setError("Please generate keys first");
+      return;
+    }
+
+    const IP = tables.IP;
+    const IP_INV = tables.IP_INV;
+
+    const plaintext = input.split("").map(Number);
+    const permutedInput = permute(plaintext, IP);
+
+    let left = permutedInput.slice(0, 4);
+    let right = permutedInput.slice(4);
+
+    const round = (left, right, subKey) => {
+      const EP = tables.EP;
+      const P4 = tables.P4;
+
+      const expandedRight = permute(right, EP);
+      const xorResult = xor(expandedRight, subKey);
+
+      const leftXor = xorResult.slice(0, 4);
+      const rightXor = xorResult.slice(4);
+
+      const sboxSubstitution = (bits, sbox) => {
+        const row = (bits[0] << 1) | bits[3];
+        const col = (bits[1] << 1) | bits[2];
+        const value = sbox[row][col];
+        return value.toString(2).padStart(2, "0").split("").map(Number);
+      };
+
+      const S0 = [
+        [1, 0, 3, 2],
+        [3, 2, 1, 0],
+        [0, 2, 1, 3],
+        [3, 1, 3, 2],
+      ];
+
+      const S1 = [
+        [0, 1, 2, 3],
+        [2, 0, 1, 3],
+        [3, 0, 1, 0],
+        [2, 1, 0, 3],
+      ];
+
+      const sboxLeft = sboxSubstitution(leftXor, S0);
+      const sboxRight = sboxSubstitution(rightXor, S1);
+
+      const combinedSBox = [...sboxLeft, ...sboxRight];
+      const p4Result = permute(combinedSBox, P4);
+
+      const newLeft = xor(left, p4Result);
+
+      return [newLeft, right];
+    };
+
+    [left, right] = round(left, right, k1);
+    [left, right] = [right, left];
+    [left, right] = round(left, right, k2);
+
+    const combined = [...left, ...right];
+    const ciphertext = permute(combined, IP_INV);
+
+    setOutput(ciphertext.join(""));
+    setSteps((prev) => [...prev, { step: "Final Permutation", ciphertext }]);
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white p-8">
-      <div className="max-w-7xl mx-auto">
-        <header className="mb-12 text-center">
-          <h1 className="text-4xl font-bold text-purple-400 mb-4">Data Encryption Standards</h1>
-          <p className="text-gray-400">Comprehensive Guide to DES and AES Implementation</p>
-        </header>
+    <div className="p-6 bg-gray-900 text-white rounded-lg shadow-lg max-w-4xl mx-auto">
+      <h1 className="text-3xl font-bold mb-6 text-purple-400">
+        S-DES Encryption
+      </h1>
 
-        {/* Navigation Tabs */}
-        <div className="flex gap-4 mb-8">
-          {['sdes', 'des', 'aes'].map((tab) => (
-            <button
-              key={tab}
-              onClick={() => setActiveTab(tab)}
-              className={`px-4 py-2 rounded-lg transition-colors ${
-                activeTab === tab
-                  ? 'bg-purple-600 text-white'
-                  : 'bg-gray-800 text-gray-400 hover:bg-gray-700'
-              }`}
+      {error && (
+        <Alert variant="destructive" className="mb-4">
+          <AlertDescription>{error}</AlertDescription>
+        </Alert>
+      )}
+
+      <div className="mb-4">
+        <label className="block font-semibold">Input (8-bit binary):</label>
+        <input
+          type="text"
+          className="border p-2 rounded w-full text-black"
+          value={input}
+          onChange={(e) => {
+            setError("");
+            setInput(e.target.value);
+          }}
+          placeholder="e.g., 10101010"
+        />
+      </div>
+
+      <div className="mb-4">
+        <label className="block font-semibold">Key (10-bit binary):</label>
+        <input
+          type="text"
+          className="border p-2 rounded w-full text-black"
+          value={key}
+          onChange={(e) => {
+            setError("");
+            setKey(e.target.value);
+          }}
+          placeholder="e.g., 1010101010"
+        />
+      </div>
+
+      <div className="space-x-4 mb-6">
+        <button
+          className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded"
+          onClick={generateKeys}
+        >
+          Generate Keys
+        </button>
+
+        <button 
+          className="bg-green-500 hover:bg-green-600 text-white p-2 rounded" 
+          onClick={encrypt}
+        >
+          Encrypt
+        </button>
+      </div>
+
+      {k1.length > 0 && k2.length > 0 && (
+        <div className="mt-4 p-4 bg-gray-800 rounded-lg">
+          <h2 className="text-xl font-bold text-purple-400 mb-2">Generated Keys:</h2>
+          <p className="mb-2">K1: {k1.join("")}</p>
+          <p>K2: {k2.join("")}</p>
+        </div>
+      )}
+
+      {output && (
+        <div className="mt-6">
+          <h2 className="text-xl font-bold text-purple-400">Encrypted Output:</h2>
+          <p className="text-lg">{output}</p>
+        </div>
+      )}
+
+      <div className="mt-6">
+        <h2 className="text-xl font-bold text-purple-400">Permutation Tables:</h2>
+        <div className="grid grid-cols-2 gap-4">
+          {Object.entries(tables).map(([tableName, tableValues], index) => (
+            <div
+              key={index}
+              className="bg-gray-800 p-4 rounded-lg shadow-md border border-purple-400"
             >
-              {tab.toUpperCase()}
-            </button>
+              <h3 className="text-lg font-semibold text-purple-300">{tableName}</h3>
+              <div className="grid grid-cols-5 gap-2 mt-2">
+                {tableValues.map((value, i) => (
+                  <div
+                    key={i}
+                    className="bg-purple-500 text-white text-center rounded-lg p-2"
+                  >
+                    {value}
+                  </div>
+                ))}
+              </div>
+            </div>
           ))}
         </div>
-
-        {/* Main Content */}
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Left Column - Theory */}
-          <div className="space-y-6">
-            <section className="bg-gray-800 rounded-xl p-6">
-              <h2 className="text-2xl font-bold text-purple-400 mb-4">
-                {activeTab === 'sdes' ? 'Simple DES Overview' : 
-                 activeTab === 'des' ? 'DES Algorithm' : 'AES Structure'}
-              </h2>
-              
-              <div className="space-y-4">
-                <div className="flex items-center gap-2">
-                  <Shield className="text-purple-400" />
-                  <h3 className="text-xl font-semibold">Key Features</h3>
-                </div>
-                
-                <ul className="space-y-2 text-gray-300">
-                  {activeTab === 'sdes' && (
-                    <>
-                      <li>• 8-bit block size</li>
-                      <li>• 10-bit key length</li>
-                      <li>• 2 rounds of encryption</li>
-                      <li>• Feistel network structure</li>
-                    </>
-                  )}
-                  {activeTab === 'des' && (
-                    <>
-                      <li>• 64-bit block size</li>
-                      <li>• 56-bit effective key length</li>
-                      <li>• 16 rounds of encryption</li>
-                      <li>• Complex key schedule</li>
-                    </>
-                  )}
-                  {activeTab === 'aes' && (
-                    <>
-                      <li>• 128-bit block size</li>
-                      <li>• 128/192/256-bit key sizes</li>
-                      <li>• 10/12/14 rounds</li>
-                      <li>• Substitution-permutation network</li>
-                    </>
-                  )}
-                </ul>
-              </div>
-            </section>
-
-            {/* Permutation Tables */}
-            <section className="bg-gray-800 rounded-xl p-6">
-              <div className="flex justify-between items-center mb-4">
-                <h3 className="text-xl font-semibold text-purple-400">Permutation Tables</h3>
-                <button
-                  onClick={() => setShowPermutations(!showPermutations)}
-                  className="text-sm text-purple-400 hover:text-purple-300"
-                >
-                  {showPermutations ? 'Hide' : 'Show'} Tables
-                </button>
-              </div>
-              
-              {showPermutations && (
-                <div className="grid grid-cols-2 gap-4">
-                  {Object.entries(permutations).map(([name, perm]) => (
-                    <div key={name} className="bg-gray-900 p-4 rounded-lg">
-                      <h4 className="text-purple-400 mb-2">{name}</h4>
-                      <div className="grid grid-cols-5 gap-1">
-                        {perm.map((num, i) => (
-                          <div key={i} className="bg-purple-900/30 p-1 rounded text-center text-sm">
-                            {num}
-                          </div>
-                        ))}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              )}
-            </section>
-          </div>
-
-          {/* Right Column - Interactive Demo */}
-          <div className="space-y-6">
-            <section className="bg-gray-800 rounded-xl p-6">
-              <h2 className="text-2xl font-bold text-purple-400 mb-6">Interactive Demo</h2>
-              
-              <div className="space-y-4">
-                <div className="space-y-2">
-                  <label className="block text-sm text-gray-400">Plaintext</label>
-                  <input
-                    type="text"
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    className="w-full bg-gray-900 border border-purple-500/30 rounded p-2 text-purple-300"
-                    placeholder="Enter 8-bit binary"
-                  />
-                </div>
-
-                <div className="space-y-2">
-                  <label className="block text-sm text-gray-400">Key</label>
-                  <input
-                    type="text"
-                    value={key}
-                    onChange={(e) => setKey(e.target.value)}
-                    className="w-full bg-gray-900 border border-purple-500/30 rounded p-2 text-purple-300"
-                    placeholder="Enter 10-bit key"
-                  />
-                </div>
-
-                <button
-                  onClick={handleEncrypt}
-                  className="w-full flex items-center justify-center gap-2 bg-purple-600 hover:bg-purple-700 text-white py-2 rounded transition-colors"
-                  disabled={isLoading}
-                >
-                  {isLoading ? (
-                    <RefreshCw className="w-4 h-4 animate-spin" />
-                  ) : (
-                    <Play className="w-4 h-4" />
-                  )}
-                  Encrypt
-                </button>
-
-                <div className="bg-gray-900 p-4 rounded-lg">
-                  <h4 className="font-bold mb-2 text-purple-300">Result:</h4>
-                  <code className="text-purple-300">{result}</code>
-                </div>
-              </div>
-            </section>
-
-            {/* Visualization */}
-            <section className="bg-gray-800 rounded-xl p-6">
-              <h3 className="text-xl font-bold text-purple-400 mb-4">Process Visualization</h3>
-              <div className="aspect-video bg-gray-900 rounded-lg flex items-center justify-center">
-                <p className="text-gray-400">Encryption process visualization</p>
-              </div>
-            </section>
-          </div>
-        </div>
-
-        {/* Additional Information */}
-        <section className="mt-12 bg-gray-800 rounded-xl p-6">
-          <h2 className="text-2xl font-bold text-purple-400 mb-6">Implementation Details</h2>
-          <div className="grid md:grid-cols-3 gap-8">
-            <div className="space-y-2">
-              <h3 className="font-bold text-purple-300">S-Boxes</h3>
-              <div className="bg-gray-900 p-4 rounded-lg">
-              <div className="bg-black/30 p-4 rounded-lg">
-                      <img 
-                        src="https://i.postimg.cc/59m5MTVT/s-boxes.png"
-                        alt="Key-Scheduling"
-                        className="rounded-lg w-full mb-4"
-                      />
-                      <p className="text-sm text-gray-400 italic">Key-Scheduling</p>
-                    </div>
-                <p className="text-sm text-gray-400">
-                  Non-linear substitution tables used in the F function
-                </p>
-              </div>
-            </div>
-            
-            <div className="space-y-2">
-              <h3 className="font-bold text-purple-300">Key Schedule</h3>
-              <div className="bg-gray-900 p-4 rounded-lg">
-              <div className="bg-black/30 p-4 rounded-lg">
-                      <img 
-                        src="https://i.postimg.cc/kG7xbFxT/Key-Scheduling.png"
-                        alt="Key-Scheduling"
-                        className="rounded-lg w-full mb-4"
-                      />
-                      <p className="text-sm text-gray-400 italic">Key-Scheduling</p>
-                    </div>
-                  
-                <p className="text-sm text-gray-400">
-                  Process of generating subkeys for each round
-                </p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <h3 className="font-bold text-purple-300">Round Function</h3>
-              <div className="bg-gray-900 p-4 rounded-lg">
-              <div className="bg-black/30 p-4 rounded-lg">
-                      <img 
-                        src="https://i.postimg.cc/QCSck9mh/Round-Function.png"
-                        alt="Key-Scheduling"
-                        className="rounded-lg w-full mb-4"
-                      />
-                      <p className="text-sm text-gray-400 italic">Key-Scheduling</p>
-                    </div>
-                <p className="text-sm text-gray-400">
-                  Core transformation applied in each round
-                </p>
-              </div>
-            </div>
-          </div>
-        </section>
       </div>
     </div>
   );
 };
 
-export default SDESImplementation;
+export default SDESEncryption;
