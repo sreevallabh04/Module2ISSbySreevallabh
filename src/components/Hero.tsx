@@ -15,10 +15,10 @@ const TypewriterText: React.FC<{ phrases: string[]; typingSpeed?: number; deleti
   const [isPaused, setIsPaused] = useState(false);
 
   useEffect(() => {
-    let timer: NodeJS.Timeout;
+    let timer: number;
     
     if (isPaused) {
-      timer = setTimeout(() => {
+      timer = window.setTimeout(() => {
         setIsPaused(false);
         setIsTyping(false);
       }, pauseTime);
