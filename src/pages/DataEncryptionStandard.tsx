@@ -1,15 +1,26 @@
 import React, { useState } from "react";
 
+type KeyDetails = {
+  permutedKey: number[];
+  K1: number[];
+  K2: number[];
+};
+
+type Step = {
+  step: string;
+  details?: KeyDetails;
+  ciphertext?: number[];
+};
 
 const SDESEncryption = () => {
-  const [input, setInput] = useState("");
-  const [key, setKey] = useState("");
-  const [k1, setK1] = useState([]);
-  const [k2, setK2] = useState([]);
-  const [output, setOutput] = useState("");
-  const [steps, setSteps] = useState([]);
-  const [error, setError] = useState("");
-  const [showSteps, setShowSteps] = useState(false);
+  const [input, setInput] = useState<string>("");
+  const [key, setKey] = useState<string>("");
+  const [k1, setK1] = useState<number[]>([]);
+  const [k2, setK2] = useState<number[]>([]);
+  const [output, setOutput] = useState<string>("");
+  const [steps, setSteps] = useState<Step[]>([]);
+  const [error, setError] = useState<string>("");
+  const [showSteps, setShowSteps] = useState<boolean>(false);
 
   const tables = {
     P10: [3, 5, 2, 7, 4, 10, 1, 9, 8, 6],
@@ -20,17 +31,17 @@ const SDESEncryption = () => {
     P4: [2, 4, 3, 1],
   };
 
-  const validateBinary = (str, length) => {
+  const validateBinary = (str: string, length: number): boolean => {
     const regex = new RegExp(`^[0-1]{${length}}$`);
     return regex.test(str);
   };
 
   // Utility functions for encryption
-  const permute = (bits, table) => table.map((i) => bits[i - 1]);
-  const leftShift = (bits, shifts) => [...bits.slice(shifts), ...bits.slice(0, shifts)];
-  const xor = (bits1, bits2) => bits1.map((bit, i) => bit ^ bits2[i]);
+  const permute = (bits: number[], table: number[]): number[] => table.map((i) => bits[i - 1]);
+  const leftShift = (bits: number[], shifts: number): number[] => [...bits.slice(shifts), ...bits.slice(0, shifts)];
+  const xor = (bits1: number[], bits2: number[]): number[] => bits1.map((bit, i) => bit ^ bits2[i]);
 
-  const generateKeys = () => {
+  const generateKeys = (): void => {
     // Clear previous error and results
     setError("");
     setK1([]);
@@ -87,7 +98,7 @@ const SDESEncryption = () => {
     setShowSteps(true);
   };
 
-  const encrypt = () => {
+  const encrypt = (): void => {
     // Validate input before encryption
     if (!input) {
       setError("Please enter input text");
@@ -111,7 +122,7 @@ const SDESEncryption = () => {
     let left = permutedInput.slice(0, 4);
     let right = permutedInput.slice(4);
 
-    const round = (left, right, subKey) => {
+    const round = (left: number[], right: number[], subKey: number[]): [number[], number[]] => {
       const EP = tables.EP;
       const P4 = tables.P4;
 
@@ -121,7 +132,7 @@ const SDESEncryption = () => {
       const leftXor = xorResult.slice(0, 4);
       const rightXor = xorResult.slice(4);
 
-      const sboxSubstitution = (bits, sbox) => {
+      const sboxSubstitution = (bits: number[], sbox: number[][]): number[] => {
         const row = (bits[0] << 1) | bits[3];
         const col = (bits[1] << 1) | bits[2];
         const value = sbox[row][col];
@@ -178,86 +189,88 @@ const SDESEncryption = () => {
             </div>
           )}
 
-      <div className="mb-4">
-        <label className="block font-semibold">Input (8-bit binary):</label>
-        <input
-          type="text"
-          className="border p-2 rounded w-full text-black"
-          value={input}
-          onChange={(e) => {
-            setError("");
-            setInput(e.target.value);
-          }}
-          placeholder="e.g., 10101010"
-        />
-      </div>
+          <div className="mb-4">
+            <label className="block font-semibold">Input (8-bit binary):</label>
+            <input
+              type="text"
+              className="border p-2 rounded w-full text-black"
+              value={input}
+              onChange={(e) => {
+                setError("");
+                setInput(e.target.value);
+              }}
+              placeholder="e.g., 10101010"
+            />
+          </div>
 
-      <div className="mb-4">
-        <label className="block font-semibold">Key (10-bit binary):</label>
-        <input
-          type="text"
-          className="border p-2 rounded w-full text-black"
-          value={key}
-          onChange={(e) => {
-            setError("");
-            setKey(e.target.value);
-          }}
-          placeholder="e.g., 1010101010"
-        />
-      </div>
+          <div className="mb-4">
+            <label className="block font-semibold">Key (10-bit binary):</label>
+            <input
+              type="text"
+              className="border p-2 rounded w-full text-black"
+              value={key}
+              onChange={(e) => {
+                setError("");
+                setKey(e.target.value);
+              }}
+              placeholder="e.g., 1010101010"
+            />
+          </div>
 
-      <div className="space-x-4 mb-6">
-        <button
-          className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded"
-          onClick={generateKeys}
-        >
-          Generate Keys
-        </button>
-
-        <button 
-          className="bg-green-500 hover:bg-green-600 text-white p-2 rounded" 
-          onClick={encrypt}
-        >
-          Encrypt
-        </button>
-      </div>
-
-      {k1.length > 0 && k2.length > 0 && (
-        <div className="mt-4 p-4 bg-gray-800 rounded-lg">
-          <h2 className="text-xl font-bold text-purple-400 mb-2">Generated Keys:</h2>
-          <p className="mb-2">K1: {k1.join("")}</p>
-          <p>K2: {k2.join("")}</p>
-        </div>
-      )}
-
-      {output && (
-        <div className="mt-6">
-          <h2 className="text-xl font-bold text-purple-400">Encrypted Output:</h2>
-          <p className="text-lg">{output}</p>
-        </div>
-      )}
-
-      <div className="mt-6">
-        <h2 className="text-xl font-bold text-purple-400">Permutation Tables:</h2>
-        <div className="grid grid-cols-2 gap-4">
-          {Object.entries(tables).map(([tableName, tableValues], index) => (
-            <div
-              key={index}
-              className="bg-gray-800 p-4 rounded-lg shadow-md border border-purple-400"
+          <div className="space-x-4 mb-6">
+            <button
+              className="bg-blue-500 hover:bg-blue-600 text-white p-2 rounded"
+              onClick={generateKeys}
             >
-              <h3 className="text-lg font-semibold text-purple-300">{tableName}</h3>
-              <div className="grid grid-cols-5 gap-2 mt-2">
-                {tableValues.map((value, i) => (
-                  <div
-                    key={i}
-                    className="bg-purple-500 text-white text-center rounded-lg p-2"
-                  >
-                    {value}
-                  </div>
-                ))}
-              </div>
+              Generate Keys
+            </button>
+
+            <button 
+              className="bg-green-500 hover:bg-green-600 text-white p-2 rounded" 
+              onClick={encrypt}
+            >
+              Encrypt
+            </button>
+          </div>
+
+          {k1.length > 0 && k2.length > 0 && (
+            <div className="mt-4 p-4 bg-gray-800 rounded-lg">
+              <h2 className="text-xl font-bold text-purple-400 mb-2">Generated Keys:</h2>
+              <p className="mb-2">K1: {k1.join("")}</p>
+              <p>K2: {k2.join("")}</p>
             </div>
-          ))}
+          )}
+
+          {output && (
+            <div className="mt-6">
+              <h2 className="text-xl font-bold text-purple-400">Encrypted Output:</h2>
+              <p className="text-lg">{output}</p>
+            </div>
+          )}
+
+          <div className="mt-6">
+            <h2 className="text-xl font-bold text-purple-400">Permutation Tables:</h2>
+            <div className="grid grid-cols-2 gap-4">
+              {Object.entries(tables).map(([tableName, tableValues], index) => (
+                <div
+                  key={index}
+                  className="bg-gray-800 p-4 rounded-lg shadow-md border border-purple-400"
+                >
+                  <h3 className="text-lg font-semibold text-purple-300">{tableName}</h3>
+                  <div className="grid grid-cols-5 gap-2 mt-2">
+                    {tableValues.map((value, i) => (
+                      <div
+                        key={i}
+                        className="bg-purple-500 text-white text-center rounded-lg p-2"
+                      >
+                        {value}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </div>
         </div>
       </div>
     </div>
