@@ -165,16 +165,18 @@ const SDESEncryption = () => {
   };
 
   return (
-    <div className="p-6 bg-gray-900 text-white rounded-lg shadow-lg max-w-4xl mx-auto">
-      <h1 className="text-3xl font-bold mb-6 text-purple-400">
-        S-DES Encryption
-      </h1>
+    <div className="pt-16">
+      <div className="max-w-7xl mx-auto px-4 py-16">
+        <h1 className="text-4xl font-bold mb-6 text-purple-400">
+          Simplified DES Encryption
+        </h1>
 
-      {error && (
-        <Alert variant="destructive" className="mb-4">
-          <AlertDescription>{error}</AlertDescription>
-        </Alert>
-      )}
+        <div className="p-6 bg-gray-900/50 backdrop-blur-md rounded-xl border border-purple-500/30 shadow-lg">
+          {error && (
+            <div className="mb-4 p-3 bg-red-500/20 border border-red-500 rounded-lg text-red-200">
+              {error}
+            </div>
+          )}
 
       <div className="mb-4">
         <label className="block font-semibold">Input (8-bit binary):</label>
