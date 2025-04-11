@@ -45,3 +45,97 @@
   animation: twinkle 4s ease-in-out infinite;
   opacity: 0.5;
 }
+
+/* Binary Rain Animation */
+@keyframes binaryRain {
+  0% { 
+    background-position: 0% 0%; 
+  }
+  100% { 
+    background-position: 0% 100%; 
+  }
+}
+
+.binary-rain {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 300%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='800' viewBox='0 0 400 800'%3E%3Cstyle%3E @keyframes fall %7B from %7B transform: translateY(0); %7D to %7B transform: translateY(100px); %7D %7D text %7B font-family: monospace; font-size: 14px; fill: %23a78bfa; animation: fall 10s linear infinite; %7D %3C/style%3E%3Ctext x='10' y='20'%3E01001%3C/text%3E%3Ctext x='50' y='40'%3E10110%3C/text%3E%3Ctext x='90' y='15'%3E01010%3C/text%3E%3Ctext x='140' y='30'%3E10101%3C/text%3E%3Ctext x='180' y='45'%3E11001%3C/text%3E%3Ctext x='220' y='25'%3E01101%3C/text%3E%3Ctext x='260' y='35'%3E10011%3C/text%3E%3Ctext x='300' y='10'%3E11010%3C/text%3E%3Ctext x='340' y='40'%3E00101%3C/text%3E%3Ctext x='30' y='60'%3E11100%3C/text%3E%3Ctext x='70' y='80'%3E01001%3C/text%3E%3Ctext x='120' y='50'%3E10111%3C/text%3E%3Ctext x='160' y='70'%3E10010%3C/text%3E%3Ctext x='200' y='55'%3E01101%3C/text%3E%3Ctext x='240' y='75'%3E11001%3C/text%3E%3Ctext x='280' y='65'%3E01010%3C/text%3E%3Ctext x='320' y='85'%3E10110%3C/text%3E%3C/svg%3E");
+  background-repeat: repeat-y;
+  animation: binaryRain 30s linear infinite;
+}
+
+/* Float Random Animation */
+@keyframes float-random {
+  0%, 100% { 
+    transform: translate(0, 0) rotate(0deg); 
+  }
+  25% { 
+    transform: translate(10px, -15px) rotate(5deg); 
+  }
+  50% { 
+    transform: translate(-5px, 10px) rotate(-5deg); 
+  }
+  75% { 
+    transform: translate(-10px, -10px) rotate(3deg); 
+  }
+}
+
+.animate-float-random {
+  animation: float-random 20s ease-in-out infinite;
+}
+
+/* Slow Pulse Animation */
+@keyframes pulse-slow {
+  0%, 100% { 
+    opacity: 1;
+  }
+  50% { 
+    opacity: 0.7;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse-slow 3s ease-in-out infinite;
+}
+
+/* Utils for prose content */
+.prose-cryptography h1, 
+.prose-cryptography h2, 
+.prose-cryptography h3 {
+  color: #a78bfa;
+  margin-top: 1.5em;
+  margin-bottom: 0.75em;
+}
+
+.prose-cryptography p {
+  margin-bottom: 1em;
+  line-height: 1.6;
+}
+
+.prose-cryptography code {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 0.2em 0.4em;
+  border-radius: 0.25em;
+  font-family: monospace;
+}
+
+.prose-cryptography pre {
+  background-color: rgba(0, 0, 0, 0.3);
+  padding: 1em;
+  border-radius: 0.5em;
+  overflow-x: auto;
+  margin: 1em 0;
+}
+
+.prose-cryptography ul, 
+.prose-cryptography ol {
+  margin-left: 1.5em;
+  margin-bottom: 1em;
+}
+
+.prose-cryptography li {
+  margin-bottom: 0.5em;
+}
